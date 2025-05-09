@@ -21,7 +21,7 @@ let riders = {}
 let users = {};
 // Handle WebSocket connections
 io.on('connection', (socket) => {
-    console.log('connected:', socket.id);
+    console.log('connecteds:', socket.id);
 
     const userId = socket.handshake.query.userId;
     const latitude = socket.handshake.query.lat;
@@ -58,9 +58,9 @@ io.on('connection', (socket) => {
     });
 
     socket.on('disconnect', () => {
-        
-        for (const id in riders){
-            if(riders[id].socketId === socket.id){
+
+        for (const id in riders) {
+            if (riders[id].socketId === socket.id) {
                 delete riders[id]
                 console.log(`${id} removed from riders`);
                 break;
