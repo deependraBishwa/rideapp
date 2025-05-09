@@ -36,7 +36,7 @@ io.on('connection', (socket) => {
         riders[userId] = { userId: userId, socketId: socket.id, latitude, longitude, name, userType };
     }
 
-    console.log(socket);
+    console.log(JSON.stringify(socket));
 
     socket.on('send_message', (data) => {
         const recepientType = data.recepientType;
