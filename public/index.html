@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Socket.IO User List</title>
+</head>
+<body>
+    <h2>Connected Users</h2>
+    <ul id="userList"></ul>
+
+    <script src="/socket.io/socket.io.js"></script>
+    <script>
+        const socket = io({
+            query: {
+                userToken: 'frontend-demo',
+                userType: 'USER',
+                latitude: '0',
+                longitude: '0',
+                name: 'FrontendUser'
+            }
+        });
+
+        socket.on('connect', () => {
+            console.log('Connected as:', socket.id);
+        });
+
+        socket.on('connected_users', (users) => {
+            const userList = document.getElementById('userList');
+            userList.innerHTML = '';
+            users.forEach(user => {
+                const li = document.createElement('li');
+                li.textContent = `Name: ${user.name || 'N/A'}, Socket ID: ${user.socketId}`;
+                li.id = `user-${user.socketId}`;
+                userList.appendChild(li);
+            });
+        });
+
+        socket.on('disconnected', (user) => {
+            const li = document.getElementById(`user-${user.socketId}`);
+            if (li) {
+                li.remove();
+            }
+        });
+
+        socket.on('new_request', (data) => {
+            console.log('New request from server:', data);
+        });
+    </script>
+</body>
+</html>
